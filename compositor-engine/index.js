@@ -50,7 +50,12 @@ fs.writeFile(
   }
 )
 
-const build = spawn("yarn", ["workspace", "compositor-template", "build"])
+const build = spawn("yarn", [
+  "workspace",
+  "compositor-template",
+  "build",
+  "--prefix-paths",
+])
 
 build.stdout.setEncoding("utf8")
 build.stdout.on("data", data => console.log(data))
