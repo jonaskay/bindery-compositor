@@ -86,11 +86,9 @@ build.on("close", code => {
         res.on("data", chunk => (body += chunk))
 
         res.on("end", () => {
-          console.log("Get access token:", res.statusCode)
-
           const accessToken = JSON.parse(body)["access_token"]
 
-          https.request(
+          const req = https.request(
             {
               hostname: "www.googleapis.com",
               path: `/compute/v1/projects/${process.env.CLOUD_PROJECT_ID}/zones/${process.env.COMPUTE_ENGINE_ZONE}/instances/${process.env.HOSTNAME}`,
@@ -100,11 +98,15 @@ build.on("close", code => {
               },
             },
             res => {
-              res.on("end", () =>
-                console.log("Delete instance:", res.statusCode)
-              )
+              let body = ""
+
+              res.on("data", chunk => (body += chunk))
             }
           )
+
+          req.on("error", err => console.error(err))
+
+          req.end()
         })
       }
     )
