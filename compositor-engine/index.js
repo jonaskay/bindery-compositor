@@ -83,14 +83,21 @@ build.on("close", code => {
         res.on("end", () => {
           const accessToken = JSON.parse(body)["access_token"]
 
-          https.request({
-            hostname: "www.googleapis.com",
-            path: `/compute/v1/projects/${process.env.CLOUD_PROJECT_ID}/zones/${process.env.COMPUTE_ENGINE_ZONE}/instances/${process.env.HOSTNAME}`,
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
+          https.request(
+            {
+              hostname: "www.googleapis.com",
+              path: `/compute/v1/projects/${process.env.CLOUD_PROJECT_ID}/zones/${process.env.COMPUTE_ENGINE_ZONE}/instances/${process.env.HOSTNAME}`,
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
             },
-          })
+            res => {
+              res.on("end", () =>
+                console.log("Delete instance:", res.statusCode)
+              )
+            }
+          )
         })
       }
     )
