@@ -1,0 +1,10 @@
+{
+  "name": "compositor-engine",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Joonas Kykkänen <jonaskay@iki.fi>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
+}

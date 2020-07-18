@@ -1,0 +1,5 @@
+node_modules
+.cache
+public
+service-account.json
+compositor-template/gatsby-config.js
