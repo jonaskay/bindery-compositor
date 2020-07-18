@@ -86,6 +86,8 @@ build.on("close", code => {
         res.on("data", chunk => (body += chunk))
 
         res.on("end", () => {
+          console.log("Get access token:", res.statusCode)
+
           const accessToken = JSON.parse(body)["access_token"]
 
           https.request(
