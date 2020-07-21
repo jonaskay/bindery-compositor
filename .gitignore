@@ -118,3 +118,6 @@ service-account.json
 
 # Ignore auto-generated files
 gatsby-config.js
+
+tmp/*
+!tmp/.keep
