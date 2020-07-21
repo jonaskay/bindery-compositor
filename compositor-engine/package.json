@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "main": "index.js",
   "author": "Joonas Kykkänen <jonaskay@iki.fi>",
+  "devDependencies": {
+    "jest": "^26.1.0"
+  },
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest"
   }
 }

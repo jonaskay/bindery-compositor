@@ -3,6 +3,7 @@
   "workspaces": ["compositor-engine", "compositor-template"],
   "scripts": {
     "build": "yarn workspace compositor-template build --prefix-paths",
-    "start": "yarn workspace compositor-engine start"
+    "start": "yarn workspace compositor-engine start",
+    "test": "yarn workspace compositor-engine test"
   }
 }

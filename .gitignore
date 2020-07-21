@@ -117,4 +117,4 @@ public
 service-account.json
 
 # Ignore auto-generated files
-compositor-template/gatsby-config.js
+gatsby-config.js
