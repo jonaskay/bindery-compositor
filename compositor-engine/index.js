@@ -1,10 +1,9 @@
 const path = require("path")
-const { exec } = require("child_process")
 const http = require("http")
 const https = require("https")
 
 const createConfig = require("./src/create-config")
-const buildSite = require("./src/build-site")
+const runProcess = require("./src/run-process")
 
 createConfig(
   path.resolve(__dirname, "..", "compositor-template"),
@@ -13,16 +12,12 @@ createConfig(
   err => {
     if (err) return console.error(err)
 
-    buildSite(code => {
-      exec(
-        "bin/copy",
-        { cwd: path.resolve(__dirname) },
-        (err, stdout, stderr) => {
-          if (err) return console.error(err)
-
-          console.log(stdout)
-          console.error(stderr)
-
+    runProcess(
+      "yarn",
+      ["workspace", "compositor-template", "build", "--prefix-paths"],
+      path.resolve(__dirname),
+      code => {
+        runProcess("bin/copy", [], path.resolve(__dirname), code => {
           http.get(
             {
               hostname: "metadata.google.internal",
@@ -62,8 +57,8 @@ createConfig(
               })
             }
           )
-        }
-      )
-    })
+        })
+      }
+    )
   }
 )
