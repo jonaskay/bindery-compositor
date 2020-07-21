@@ -1,9 +1,10 @@
 const path = require("path")
-const { spawn, exec } = require("child_process")
+const { exec } = require("child_process")
 const http = require("http")
 const https = require("https")
 
 const createConfig = require("./src/create-config")
+const buildSite = require("./src/build-site")
 
 createConfig(
   path.resolve(__dirname, "..", "compositor-template"),
@@ -12,22 +13,7 @@ createConfig(
   err => {
     if (err) return console.error(err)
 
-    const build = spawn("yarn", [
-      "workspace",
-      "compositor-template",
-      "build",
-      "--prefix-paths",
-    ])
-
-    build.stdout.setEncoding("utf8")
-    build.stdout.on("data", data => console.log(data))
-
-    build.stderr.setEncoding("utf8")
-    build.stderr.on("data", data => console.error(data))
-
-    build.on("close", code => {
-      console.log(`Build process exited with code ${code}`)
-
+    buildSite(code => {
       exec(
         "bin/copy",
         { cwd: path.resolve(__dirname) },
@@ -79,7 +65,5 @@ createConfig(
         }
       )
     })
-
-    build.on("error", err => console.error(err))
   }
 )
