@@ -4,6 +4,9 @@ const fetchAccessToken = () => {
   return axios
     .get("/instance/service-accounts/default/token", {
       baseURL: "http://metadata.google.internal/computeMetadata/v1",
+      headers: {
+        "Metadata-Flavor": "Google",
+      },
     })
     .then(res => res["access_token"])
 }
