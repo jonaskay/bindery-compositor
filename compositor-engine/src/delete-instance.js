@@ -1,57 +1,25 @@
-const http = require("http")
-const https = require("https")
+const axios = require("axios")
 
 const fetchAccessToken = () => {
-  return new Promise((resolve, reject) => {
-    const req = http.get(
-      {
-        hostname: "metadata.google.internal",
-        path: "/computeMetadata/v1/instance/service-accounts/default/token",
-        headers: { "Metadata-Flavor": "Google" },
-      },
-      res => {
-        let body = ""
-
-        res.on("data", chunk => (body += chunk))
-
-        res.on("end", () => {
-          let accessToken
-          try {
-            accessToken = JSON.parse(body)["access_token"]
-          } catch (err) {
-            reject(err)
-          }
-
-          resolve(accessToken)
-        })
-      }
-    )
-
-    req.on("error", err => reject(err))
-  })
+  return axios
+    .get("/instance/service-accounts/default/token", {
+      baseURL: "http://metadata.google.internal/computeMetadata/v1",
+    })
+    .then(res => res["access_token"])
+    .catch(err => err)
 }
 
 const deleteInstance = (projectId, computeZone, instance) => {
-  return new Promise((resolve, reject) => {
-    fetchAccessToken()
-      .then(accessToken => {
-        const req = https.request(
-          {
-            hostname: "www.googleapis.com",
-            path: `/compute/v1/projects/${projectId}/zones/${computeZone}/instances/${instance}`,
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
-          res => resolve(res)
-        )
-
-        req.on("error", err => reject(err))
-
-        req.end()
-      })
-      .catch(err => reject(err))
+  return fetchAccessToken().then(accessToken => {
+    return axios.delete(
+      `/projects/${projectId}/zones/${computeZone}/instances/${instance}`,
+      {
+        baseURL: "https://www.googleapis.com/compute/v1",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
   })
 }
 

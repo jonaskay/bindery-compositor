@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "main": "index.js",
   "author": "Joonas Kykkänen <jonaskay@iki.fi>",
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
   "devDependencies": {
     "jest": "^26.1.0"
   },
