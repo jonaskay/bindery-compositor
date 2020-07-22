@@ -5,11 +5,11 @@ const runProcess = require("./run-process")
 const deleteInstance = require("./delete-instance")
 
 module.exports = () => {
-  createConfig(
-    path.resolve(__dirname, "..", "compositor-template"),
-    process.env.GOOGLE_STORAGE_BUCKET,
-    process.env.HOSTNAME
-  )
+  const storageBucket = process.env.GOOGLE_STORAGE_BUCKET
+  const siteId = process.env.HOSTNAME
+  const templateDir = path.resolve(__dirname, "..", "compositor-template")
+
+  createConfig(templateDir, storageBucket, siteId)
     .then(() => {
       return runProcess(
         "yarn",
@@ -24,7 +24,7 @@ module.exports = () => {
       return deleteInstance(
         process.env.CLOUD_PROJECT_ID,
         process.env.COMPUTE_ENGINE_ZONE,
-        process.env.HOSTNAME
+        siteId
       )
     })
     .catch(err => console.error(err))
