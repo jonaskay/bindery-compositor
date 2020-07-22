@@ -25,9 +25,8 @@ module.exports = () => {
     .then(() => runBuildProcess())
     .then(() => runCopyProcess())
     .then(() => {
-      const projectId = process.env.CLOUD_PROJECT_ID
       const computeZone = process.env.COMPUTE_ENGINE_ZONE
 
-      return deleteInstance(projectId, computeZone, siteId)
+      return deleteInstance(computeZone, siteId)
     })
 }

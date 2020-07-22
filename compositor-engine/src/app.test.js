@@ -44,9 +44,5 @@ test("runs the copy process", () => {
 })
 
 test("deletes the instance", () => {
-  expect(deleteInstance).toHaveBeenCalledWith(
-    "MyProjectID",
-    "MyComputeZone",
-    "MyHostname"
-  )
+  expect(deleteInstance).toHaveBeenCalledWith("MyComputeZone", "MyHostname")
 })
