@@ -114,10 +114,10 @@ public
 .pnp.*
 
 # Ignore service account credentials
-service-account.json
+/compositor-engine/service-account.json
 
 # Ignore auto-generated files
-gatsby-config.js
+/compositor-template/gatsby-config.js
 
-tmp/*
-!tmp/.keep
+/tmp/*
+!/tmp/.keep
