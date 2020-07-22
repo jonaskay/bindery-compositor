@@ -35,7 +35,12 @@ test("runs the build process", () => {
 })
 
 test("runs the copy process", () => {
-  expect(runProcess).toHaveBeenNthCalledWith(2, "bin/copy", [], __dirname)
+  expect(runProcess).toHaveBeenNthCalledWith(
+    2,
+    "bin/copy",
+    [],
+    path.resolve(__dirname, "..")
+  )
 })
 
 test("deletes the instance", () => {

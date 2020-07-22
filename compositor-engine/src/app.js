@@ -13,7 +13,7 @@ const runBuildProcess = () => {
 }
 
 const runCopyProcess = () => {
-  return runProcess("bin/copy", [], path.resolve(__dirname))
+  return runProcess("bin/copy", [], path.resolve(__dirname, ".."))
 }
 
 module.exports = () => {
