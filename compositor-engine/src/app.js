@@ -25,11 +25,10 @@ module.exports = () => {
     .then(() => runBuildProcess())
     .then(() => runCopyProcess())
     .then(() => {
-      return deleteInstance(
-        process.env.CLOUD_PROJECT_ID,
-        process.env.COMPUTE_ENGINE_ZONE,
-        siteId
-      )
+      const projectId = process.env.CLOUD_PROJECT_ID
+      const computeZone = process.env.COMPUTE_ENGINE_ZONE
+
+      return deleteInstance(projectId, computeZone, siteId)
     })
     .catch(err => console.error(err))
 }
