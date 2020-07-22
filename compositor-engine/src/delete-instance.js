@@ -8,7 +8,7 @@ const fetchAccessToken = () => {
         "Metadata-Flavor": "Google",
       },
     })
-    .then(res => res["access_token"])
+    .then(res => res.data["access_token"])
 }
 
 const deleteInstance = (projectId, computeZone, instance) => {
