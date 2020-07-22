@@ -19,7 +19,7 @@ const runCopyProcess = () => {
 module.exports = () => {
   const storageBucket = process.env.GOOGLE_STORAGE_BUCKET
   const siteId = process.env.HOSTNAME
-  const templateDir = path.resolve(__dirname, "..", "compositor-template")
+  const templateDir = path.resolve(__dirname, "..", "..", "compositor-template")
 
   createConfig(templateDir, storageBucket, siteId)
     .then(() => runBuildProcess())
