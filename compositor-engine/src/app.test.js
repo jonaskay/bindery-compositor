@@ -3,10 +3,12 @@ const path = require("path")
 const compositor = require("./app")
 const createConfig = require("./create-config")
 const runProcess = require("./run-process")
+const publishMessage = require("./publish-message")
 const deleteInstance = require("./delete-instance")
 
 jest.mock("./create-config")
 jest.mock("./run-process")
+jest.mock("./publish-message")
 jest.mock("./delete-instance")
 
 beforeEach(() => {
@@ -41,6 +43,10 @@ test("runs the copy process", () => {
     [],
     path.resolve(__dirname, "..")
   )
+})
+
+test("publishes the deploy message", () => {
+  expect(publishMessage).toHaveBeenCalledWith("MyHostname", "build")
 })
 
 test("deletes the instance", () => {

@@ -2,6 +2,7 @@ const path = require("path")
 
 const createConfig = require("./create-config")
 const runProcess = require("./run-process")
+const publishMessage = require("./publish-message")
 const deleteInstance = require("./delete-instance")
 
 const runBuildProcess = () => {
@@ -24,6 +25,7 @@ module.exports = () => {
   createConfig(templateDir, storageBucket, siteId)
     .then(() => runBuildProcess())
     .then(() => runCopyProcess())
+    .then(() => publishMessage(siteId, "build"))
     .then(() => {
       const computeZone = process.env.COMPUTE_ENGINE_ZONE
 
