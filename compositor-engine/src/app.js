@@ -25,7 +25,11 @@ module.exports = () => {
   createConfig(templateDir, storageBucket, siteId)
     .then(() => runBuildProcess())
     .then(() => runCopyProcess())
-    .then(() => publishMessage(siteId, "build"))
+    .then(() => {
+      const topic = process.env.PUBSUB_TOPIC
+
+      return publishMessage(siteId, topic)
+    })
     .then(() => {
       const computeZone = process.env.COMPUTE_ENGINE_ZONE
 

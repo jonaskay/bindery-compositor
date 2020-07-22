@@ -46,7 +46,7 @@ test("runs the copy process", () => {
 })
 
 test("publishes the deploy message", () => {
-  expect(publishMessage).toHaveBeenCalledWith("MyHostname", "build")
+  expect(publishMessage).toHaveBeenCalledWith("MyHostname", "MyTopic")
 })
 
 test("deletes the instance", () => {
