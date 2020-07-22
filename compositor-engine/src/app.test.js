@@ -1,3 +1,5 @@
+const path = require("path")
+
 const compositor = require("./app")
 const createConfig = require("./create-config")
 const runProcess = require("./run-process")
@@ -16,7 +18,11 @@ beforeEach(() => {
 })
 
 test("creates a config file", () => {
-  expect(createConfig).toHaveBeenCalled()
+  expect(createConfig).toHaveBeenCalledWith(
+    path.resolve(__dirname, "..", "compositor-template"),
+    "MyStorageBucket",
+    "MyHostname"
+  )
 })
 
 test("runs the build process", () => {
@@ -33,5 +39,9 @@ test("runs the copy process", () => {
 })
 
 test("deletes the instance", () => {
-  expect(deleteInstance).toHaveBeenCalled()
+  expect(deleteInstance).toHaveBeenCalledWith(
+    "MyProjectID",
+    "MyComputeZone",
+    "MyHostname"
+  )
 })

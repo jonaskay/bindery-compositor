@@ -9,6 +9,6 @@
   "license": "MIT",
   "scripts": {
     "start": "node init.js",
-    "test": "jest"
+    "test": "CLOUD_PROJECT_ID=MyProjectID COMPUTE_ENGINE_ZONE=MyComputeZone GOOGLE_STORAGE_BUCKET=MyStorageBucket HOSTNAME=MyHostname jest"
   }
 }
