@@ -1,7 +1,7 @@
-const fs = require("fs")
+const fs = require("fs").promises
 const path = require("path")
 
-const config = (storageBucket, siteId) => `module.exports = {
+const configData = (storageBucket, siteId) => `module.exports = {
   pathPrefix: "/${storageBucket}/${siteId}",
   siteMetadata: {
     title: "${siteId}",
@@ -34,12 +34,13 @@ const config = (storageBucket, siteId) => `module.exports = {
   ],
 }`
 
-const createConfig = (destinationDir, storageBucket, siteId, callback) => {
-  fs.writeFile(
-    path.resolve(destinationDir, "gatsby-config.js"),
-    config(storageBucket, siteId),
-    callback
-  )
+const createConfig = async (destinationDir, storageBucket, siteId) => {
+  const filename = path.resolve(destinationDir, "gatsby-config.js")
+  const data = configData(storageBucket, siteId)
+
+  await fs.writeFile(filename, data)
+
+  return filename
 }
 
 module.exports = createConfig

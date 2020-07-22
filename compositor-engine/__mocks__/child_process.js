@@ -24,11 +24,8 @@ class FakeProcess extends EventEmitter {
   }
 }
 
-const spawn = () => {
-  return new FakeProcess()
-}
-
 const childProcess = jest.genMockFromModule("child_process")
-childProcess.spawn = spawn
+childProcess.fake = new FakeProcess()
+childProcess.spawn = jest.fn(() => childProcess.fake)
 
 module.exports = childProcess

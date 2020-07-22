@@ -1,14 +1,12 @@
 const fs = require("fs")
 const path = require("path")
+
 const createConfig = require("./create-config")
 
-test("generates a valid config file", done => {
+test("generates a valid config file", async () => {
   const destinationDir = path.resolve(__dirname, "..", "..", "tmp")
 
-  createConfig(destinationDir, "foo", "bar", () => {
-    const result = path.resolve(destinationDir, "gatsby-config.js")
-    expect(fs.readFileSync(result, "utf8")).toMatchSnapshot()
+  const result = await createConfig(destinationDir, "foo", "bar")
 
-    done()
-  })
+  expect(fs.readFileSync(result, "utf8")).toMatchSnapshot()
 })
