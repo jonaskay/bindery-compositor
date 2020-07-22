@@ -1,4 +1,5 @@
 const axios = require("axios")
+const Compute = require("@google-cloud/compute")
 
 const fetchAccessToken = () => {
   return axios
@@ -11,18 +12,12 @@ const fetchAccessToken = () => {
     .then(res => res.data["access_token"])
 }
 
-const deleteInstance = (projectId, computeZone, instance) => {
-  return fetchAccessToken().then(accessToken => {
-    return axios.delete(
-      `/projects/${projectId}/zones/${computeZone}/instances/${instance}`,
-      {
-        baseURL: "https://www.googleapis.com/compute/v1",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    )
-  })
+const deleteInstance = (projectId, zoneName, instanceName) => {
+  const compute = new Compute()
+  const zone = compute.zone(zoneName)
+  const instance = zone.vm(instanceName)
+
+  return instance.delete()
 }
 
 module.exports = deleteInstance

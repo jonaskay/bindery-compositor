@@ -4,7 +4,7 @@ const deleteInstance = require("./delete-instance")
 
 jest.mock("axios")
 
-test("sends a valid HTTP request", async () => {
+test.skip("sends a valid HTTP request", async () => {
   axios.get.mockResolvedValue({
     data: {
       access_token: "qux",

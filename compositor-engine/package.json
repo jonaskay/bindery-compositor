@@ -4,6 +4,7 @@
   "main": "index.js",
   "author": "Joonas Kykkänen <jonaskay@iki.fi>",
   "dependencies": {
+    "@google-cloud/compute": "^2.0.2",
     "axios": "^0.19.2"
   },
   "devDependencies": {
