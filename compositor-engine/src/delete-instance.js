@@ -6,7 +6,6 @@ const fetchAccessToken = () => {
       baseURL: "http://metadata.google.internal/computeMetadata/v1",
     })
     .then(res => res["access_token"])
-    .catch(err => err)
 }
 
 const deleteInstance = (projectId, computeZone, instance) => {

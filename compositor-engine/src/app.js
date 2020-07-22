@@ -30,5 +30,4 @@ module.exports = () => {
 
       return deleteInstance(projectId, computeZone, siteId)
     })
-    .catch(err => console.error(err))
 }
