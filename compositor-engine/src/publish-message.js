@@ -1,8 +1,16 @@
 const { PubSub } = require("@google-cloud/pubsub")
 
-module.exports = (siteId, topicName) => {
-  const data = JSON.stringify({ id: siteId, status: "deployed" })
+const SUCCESS = "success"
+
+module.exports = (
+  siteId,
+  topicName,
+  pubsub = new PubSub(),
+  now = new Date()
+) => {
+  const timestamp = now.toISOString()
+  const data = JSON.stringify({ id: siteId, status: SUCCESS, timestamp })
   const dataBuffer = Buffer.from(data)
 
-  return new PubSub().topic(topicName).publish(dataBuffer)
+  return pubsub.topic(topicName).publish(dataBuffer)
 }
