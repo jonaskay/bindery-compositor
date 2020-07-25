@@ -9,7 +9,11 @@ module.exports = (
   now = new Date()
 ) => {
   const timestamp = now.toISOString()
-  const data = JSON.stringify({ id: siteId, status: SUCCESS, timestamp })
+  const data = JSON.stringify({
+    publication: siteId,
+    status: SUCCESS,
+    timestamp,
+  })
   const dataBuffer = Buffer.from(data)
 
   return pubsub.topic(topicName).publish(dataBuffer)
