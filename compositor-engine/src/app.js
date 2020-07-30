@@ -21,6 +21,7 @@ const runBuildProcess = () => {
 module.exports = () => {
   const storageBucket = process.env.GOOGLE_STORAGE_BUCKET
   const siteId = process.env.HOSTNAME
+  const computeZone = process.env.COMPUTE_ENGINE_ZONE
   const templateDir = path.resolve(__dirname, "..", "..", "compositor-template")
 
   createConfig(templateDir, storageBucket, siteId)
@@ -32,9 +33,10 @@ module.exports = () => {
 
       return publishMessage(siteId, topic)
     })
-    .then(() => {
-      const computeZone = process.env.COMPUTE_ENGINE_ZONE
+    .then(() => cleanup(computeZone, siteId))
+    .catch(err => {
+      console.error(err)
 
-      return cleanup(computeZone, siteId)
+      cleanup(computeZone, siteId)
     })
 }
