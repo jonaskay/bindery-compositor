@@ -2,4 +2,4 @@
 
 openssl aes-256-cbc -K $ENCRYPTED_CREDENTIALS_KEY -iv $ENCRYPTION_CREDENTIALS_IV -in service-account.json.enc -out service-account.json -d
 gcloud auth activate-service-account --key-file service-account.json
-gsutil -m cp -r ../compositor-template/public gs://$HOSTNAME
+gsutil -m cp -r ../compositor-template/public/** gs://$HOSTNAME
