@@ -3,7 +3,7 @@ const path = require("path")
 const createConfig = require("./create-config")
 const runProcess = require("./run-process")
 const publishMessage = require("./publish-message")
-const deleteInstance = require("./delete-instance")
+const cleanup = require("./cleanup")
 
 const runBuildProcess = () => {
   return runProcess(
@@ -33,6 +33,6 @@ module.exports = () => {
     .then(() => {
       const computeZone = process.env.COMPUTE_ENGINE_ZONE
 
-      return deleteInstance(computeZone, siteId)
+      return cleanup(computeZone, siteId)
     })
 }

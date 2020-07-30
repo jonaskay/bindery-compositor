@@ -4,17 +4,17 @@ const compositor = require("./app")
 const createConfig = require("./create-config")
 const runProcess = require("./run-process")
 const publishMessage = require("./publish-message")
-const deleteInstance = require("./delete-instance")
+const cleanup = require("./cleanup")
 
 jest.mock("./create-config")
 jest.mock("./run-process")
 jest.mock("./publish-message")
-jest.mock("./delete-instance")
+jest.mock("./cleanup")
 
 beforeEach(() => {
   createConfig.mockImplementation(() => new Promise(resolve => resolve(42)))
   runProcess.mockImplementation(() => new Promise(resolve => resolve(42)))
-  deleteInstance.mockImplementation(() => new Promise(resolve => resolve(42)))
+  cleanup.mockImplementation(() => new Promise(resolve => resolve(42)))
 
   compositor()
 })
@@ -50,5 +50,5 @@ test("publishes the deploy message", () => {
 })
 
 test("deletes the instance", () => {
-  expect(deleteInstance).toHaveBeenCalledWith("MyComputeZone", "MyHostname")
+  expect(cleanup).toHaveBeenCalledWith("MyComputeZone", "MyHostname")
 })
