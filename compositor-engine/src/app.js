@@ -1,9 +1,14 @@
 const path = require("path")
 
 const createConfig = require("./create-config")
+const createBucket = require("./create-bucket")
 const runProcess = require("./run-process")
 const publishMessage = require("./publish-message")
 const cleanup = require("./cleanup")
+
+const runCopyProcess = () => {
+  return runProcess("bin/copy", [], path.resolve(__dirname, ".."))
+}
 
 const runBuildProcess = () => {
   return runProcess(
@@ -13,16 +18,13 @@ const runBuildProcess = () => {
   )
 }
 
-const runCopyProcess = () => {
-  return runProcess("bin/copy", [], path.resolve(__dirname, ".."))
-}
-
 module.exports = () => {
   const storageBucket = process.env.GOOGLE_STORAGE_BUCKET
   const siteId = process.env.HOSTNAME
   const templateDir = path.resolve(__dirname, "..", "..", "compositor-template")
 
   createConfig(templateDir, storageBucket, siteId)
+    .then(() => createBucket(siteId))
     .then(() => runBuildProcess())
     .then(() => runCopyProcess())
     .then(() => {

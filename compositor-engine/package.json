@@ -6,6 +6,7 @@
   "dependencies": {
     "@google-cloud/compute": "^2.0.2",
     "@google-cloud/pubsub": "^2.3.0",
+    "@google-cloud/storage": "^5.1.2",
     "axios": "^0.19.2"
   },
   "devDependencies": {

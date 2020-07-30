@@ -2,17 +2,20 @@ const path = require("path")
 
 const compositor = require("./app")
 const createConfig = require("./create-config")
+const createBucket = require("./create-bucket")
 const runProcess = require("./run-process")
 const publishMessage = require("./publish-message")
 const cleanup = require("./cleanup")
 
 jest.mock("./create-config")
+jest.mock("./create-bucket")
 jest.mock("./run-process")
 jest.mock("./publish-message")
 jest.mock("./cleanup")
 
 beforeEach(() => {
   createConfig.mockImplementation(() => new Promise(resolve => resolve(42)))
+  createBucket.mockImplementation(() => new Promise(resolve => resolve(42)))
   runProcess.mockImplementation(() => new Promise(resolve => resolve(42)))
   cleanup.mockImplementation(() => new Promise(resolve => resolve(42)))
 
@@ -25,6 +28,10 @@ test("creates a config file", () => {
     "MyStorageBucket",
     "MyHostname"
   )
+})
+
+test("creates a bucket", () => {
+  expect(createBucket).toHaveBeenCalledWith("MyHostname")
 })
 
 test("runs the build process", () => {
