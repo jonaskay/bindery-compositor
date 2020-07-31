@@ -2,16 +2,16 @@ const path = require("path")
 
 const createConfig = require("./create-config")
 const createBucket = require("./create-bucket")
-const runProcess = require("./run-process")
+const run = require("./run")
 const publishMessage = require("./publish-message")
 const cleanup = require("./cleanup")
 
 const runCopyProcess = () => {
-  return runProcess("bin/copy", [], path.resolve(__dirname, ".."))
+  return run("bin/copy", [], path.resolve(__dirname, ".."))
 }
 
 const runBuildProcess = () => {
-  return runProcess(
+  return run(
     "yarn",
     ["workspace", "compositor-template", "build", "--prefix-paths"],
     path.resolve(__dirname)

@@ -1,7 +1,7 @@
 const path = require("path")
 const childProcess = require("child_process")
 
-const runProcess = require("./run-process")
+const run = require(".")
 
 jest.mock("child_process")
 
@@ -11,7 +11,7 @@ beforeEach(() => {
 })
 
 test("logs output from stdout and stderr", done => {
-  runProcess("foo", [], path.resolve(__dirname)).then(() => {
+  run("foo", [], path.resolve(__dirname)).then(() => {
     expect(console.log.mock.calls[0][0]).toBe("✅")
     expect(console.error.mock.calls[0][0]).toBe("❌")
 
@@ -22,7 +22,7 @@ test("logs output from stdout and stderr", done => {
 })
 
 test("fails on errors", done => {
-  runProcess("foo", [], path.resolve(__dirname)).catch(err => {
+  run("foo", [], path.resolve(__dirname)).catch(err => {
     expect(err).toBe("🛑")
 
     done()

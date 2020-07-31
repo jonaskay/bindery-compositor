@@ -3,20 +3,20 @@ const path = require("path")
 const compositor = require("./app")
 const createConfig = require("./create-config")
 const createBucket = require("./create-bucket")
-const runProcess = require("./run-process")
+const run = require("./run")
 const publishMessage = require("./publish-message")
 const cleanup = require("./cleanup")
 
 jest.mock("./create-config")
 jest.mock("./create-bucket")
-jest.mock("./run-process")
+jest.mock("./run")
 jest.mock("./publish-message")
 jest.mock("./cleanup")
 
 beforeEach(() => {
   createConfig.mockImplementation(() => new Promise(resolve => resolve(42)))
   createBucket.mockImplementation(() => new Promise(resolve => resolve(42)))
-  runProcess.mockImplementation(() => new Promise(resolve => resolve(42)))
+  run.mockImplementation(() => new Promise(resolve => resolve(42)))
   cleanup.mockImplementation(() => new Promise(resolve => resolve(42)))
 
   compositor()
@@ -35,7 +35,7 @@ test("creates a bucket", () => {
 })
 
 test("runs the build process", () => {
-  expect(runProcess).toHaveBeenNthCalledWith(
+  expect(run).toHaveBeenNthCalledWith(
     1,
     "yarn",
     ["workspace", "compositor-template", "build", "--prefix-paths"],
@@ -44,7 +44,7 @@ test("runs the build process", () => {
 })
 
 test("runs the copy process", () => {
-  expect(runProcess).toHaveBeenNthCalledWith(
+  expect(run).toHaveBeenNthCalledWith(
     2,
     "bin/copy",
     [],

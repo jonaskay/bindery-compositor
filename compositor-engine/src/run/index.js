@@ -1,7 +1,7 @@
 const { spawn } = require("child_process")
 
-const runProcess = (command, args, cwd) => {
-  const childProcess = spawn(command, args, { cwd })
+module.exports = (cmd, args, cwd) => {
+  const childProcess = spawn(cmd, args, { cwd })
 
   childProcess.stdout.setEncoding("utf8")
   childProcess.stdout.on("data", data => console.log(data))
@@ -14,5 +14,3 @@ const runProcess = (command, args, cwd) => {
     childProcess.on("error", reject)
   })
 }
-
-module.exports = runProcess
