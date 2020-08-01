@@ -20,7 +20,7 @@ beforeEach(() => {
   success.mockImplementation(() => new Promise(resolve => resolve()))
   cleanup.mockImplementation(() => new Promise(resolve => resolve()))
 
-  publish("my-zone", "myprefix-my-publication", "my-topic")
+  publish("my-zone", "myprefix-my-publication")
 })
 
 test("creates a config file", () => {
@@ -53,7 +53,7 @@ test("runs the copy process", () => {
 })
 
 test("sends a success message", () => {
-  expect(success).toHaveBeenCalledWith("my-publication", "my-topic")
+  expect(success).toHaveBeenCalledWith("my-publication", "publish")
 })
 
 test("deletes the instance", () => {

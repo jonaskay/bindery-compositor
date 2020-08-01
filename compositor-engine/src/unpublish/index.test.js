@@ -14,7 +14,7 @@ beforeEach(() => {
   success.mockImplementation(() => new Promise(resolve => resolve()))
   cleanup.mockImplementation(() => new Promise(resolve => resolve()))
 
-  unpublish("my-zone", "myprefix-my-publication", "my-topic")
+  unpublish("my-zone", "myprefix-my-publication")
 })
 
 test("runs the delete bucket process", () => {
@@ -26,7 +26,7 @@ test("runs the delete bucket process", () => {
 })
 
 test("sends a success message", () => {
-  expect(success).toHaveBeenCalledWith("my-publication", "my-topic")
+  expect(success).toHaveBeenCalledWith("my-publication", "unpublish")
 })
 
 test("deletes the instance", () => {

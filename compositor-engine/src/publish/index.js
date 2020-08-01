@@ -7,6 +7,8 @@ const run = require("../run")
 const { success } = require("../pubsub")
 const cleanup = require("../cleanup")
 
+const PUBLISH = "publish"
+
 const runCopyProcess = publicationId => {
   return run("bin/copy", [publicationId], path.resolve(__dirname, "..", ".."))
 }
@@ -21,8 +23,7 @@ const runBuildProcess = () => {
 
 module.exports = (
   zone = process.env.COMPUTE_ZONE,
-  instance = process.env.HOSTNAME,
-  topic = process.env.PUBLISH_TOPIC
+  instance = process.env.HOSTNAME
 ) => {
   const { publicationId } = parseHostname(instance)
   const templateDir = path.resolve(__dirname, "..", "..", "compositor-template")
@@ -31,7 +32,7 @@ module.exports = (
     .then(() => createBucket(publicationId))
     .then(() => runBuildProcess())
     .then(() => runCopyProcess(publicationId))
-    .then(() => success(publicationId, topic))
+    .then(() => success(publicationId, PUBLISH))
     .then(() => cleanup(zone, instance))
     .catch(err => {
       console.error(err)
