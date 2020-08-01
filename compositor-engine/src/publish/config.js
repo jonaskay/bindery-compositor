@@ -2,10 +2,12 @@ const axios = require("axios")
 const path = require("path")
 const fs = require("fs").promises
 
-const configData = (storageBucket, siteId, siteTitle) => `module.exports = {
-  pathPrefix: "/${storageBucket}/${siteId}",
+const GATSBY_CONFIG = "gatsby-config.js"
+
+const configData = (publicationName, publicationTitle) => `module.exports = {
+  pathPrefix: "/${publicationName}",
   siteMetadata: {
-    title: "${siteTitle}",
+    title: "${publicationTitle}",
     description: "Lorem ipsum",
     author: "@gatsbyjs",
   },
@@ -35,24 +37,24 @@ const configData = (storageBucket, siteId, siteTitle) => `module.exports = {
   ],
 }`
 
-const fetchTitle = siteId => {
+const fetchTitle = publicationId => {
   return axios
-    .get(`/publications/${siteId}`, {
+    .get(`/publications/${publicationId}`, {
       baseURL: process.env.CONTENT_API_URL,
     })
     .then(res => res.data.data.attributes.title)
 }
 
-const createConfig = (destinationDir, storageBucket, siteId) => {
-  const filename = path.resolve(destinationDir, "gatsby-config.js")
+module.exports = {
+  create: (destinationDir, publicationId, publicationName) => {
+    const filename = path.resolve(destinationDir, GATSBY_CONFIG)
 
-  return fetchTitle(siteId)
-    .then(siteTitle => {
-      const data = configData(storageBucket, siteId, siteTitle)
+    return fetchTitle(publicationId)
+      .then(publicationTitle => {
+        const data = configData(publicationName, publicationTitle)
 
-      return fs.writeFile(filename, data)
-    })
-    .then(() => filename)
+        return fs.writeFile(filename, data)
+      })
+      .then(() => filename)
+  },
 }
-
-module.exports = createConfig

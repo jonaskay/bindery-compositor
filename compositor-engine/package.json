@@ -14,7 +14,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node init.js",
-    "test": "CLOUD_PROJECT_ID=MyProjectID COMPUTE_ENGINE_ZONE=MyComputeZone GOOGLE_STORAGE_BUCKET=MyStorageBucket HOSTNAME=MyHostname PUBSUB_TOPIC=MyTopic jest"
+    "pub": "node index.js publish",
+    "test": "jest",
+    "unpub": "node index.js unpublish"
   }
 }

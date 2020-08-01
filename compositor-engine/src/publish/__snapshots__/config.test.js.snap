@@ -2,7 +2,7 @@
 
 exports[`generates a valid config file 1`] = `
 "module.exports = {
-  pathPrefix: \\"/bar/baz\\",
+  pathPrefix: \\"/baz\\",
   siteMetadata: {
     title: \\"foo\\",
     description: \\"Lorem ipsum\\",

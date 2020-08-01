@@ -1,4 +1,4 @@
-const createBucket = require("./create-bucket")
+const createBucket = require("./bucket").create
 
 test("creates a new bucket", done => {
   const makePublic = jest.fn(() => new Promise(resolve => resolve(42)))
