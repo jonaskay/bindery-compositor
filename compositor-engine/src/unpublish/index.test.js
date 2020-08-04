@@ -20,7 +20,7 @@ beforeEach(() => {
 test("runs the delete bucket process", () => {
   expect(run).toHaveBeenCalledWith(
     "bin/delete",
-    ["my-publication"],
+    ["gs://my-publication"],
     path.resolve(__dirname, "..", "..")
   )
 })
