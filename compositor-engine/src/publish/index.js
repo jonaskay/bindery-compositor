@@ -10,7 +10,11 @@ const cleanup = require("../cleanup")
 const PUBLISH = "publish"
 
 const runCopyProcess = publicationId => {
-  return run("bin/copy", [publicationId], path.resolve(__dirname, "..", ".."))
+  return run(
+    "bin/copy",
+    [`gs://${publicationId}`],
+    path.resolve(__dirname, "..", "..")
+  )
 }
 
 const runBuildProcess = () => {

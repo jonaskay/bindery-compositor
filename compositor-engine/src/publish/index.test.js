@@ -47,7 +47,7 @@ test("runs the copy process", () => {
   expect(run).toHaveBeenNthCalledWith(
     2,
     "bin/copy",
-    ["my-publication"],
+    ["gs://my-publication"],
     path.resolve(__dirname, "..", "..")
   )
 })
