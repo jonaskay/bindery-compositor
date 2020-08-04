@@ -26,7 +26,13 @@ module.exports = (
   instance = process.env.HOSTNAME
 ) => {
   const { publicationId } = parseHostname(instance)
-  const templateDir = path.resolve(__dirname, "..", "..", "compositor-template")
+  const templateDir = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "compositor-template"
+  )
 
   createConfig(templateDir, publicationId)
     .then(() => createBucket(publicationId))

@@ -25,7 +25,7 @@ beforeEach(() => {
 
 test("creates a config file", () => {
   expect(createConfig).toHaveBeenCalledWith(
-    path.resolve(__dirname, "..", "..", "compositor-template"),
+    path.resolve(__dirname, "..", "..", "..", "compositor-template"),
     "my-publication"
   )
 })
