@@ -30,10 +30,6 @@ test("creates a config file", () => {
   )
 })
 
-test("creates a bucket", () => {
-  expect(createBucket).toHaveBeenCalledWith("my-publication")
-})
-
 test("runs the build process", () => {
   expect(run).toHaveBeenNthCalledWith(
     1,
@@ -43,8 +39,34 @@ test("runs the build process", () => {
   )
 })
 
-test("runs the copy process", () => {
-  expect(run).toHaveBeenNthCalledWith(2, "gsutil", [
+test("creates a bucket", () => {
+  expect(createBucket).toHaveBeenCalledWith("my-publication")
+})
+
+test("runs the create backend bucket process", () => {
+  expect(run).toHaveBeenNthCalledWith(2, "gcloud", [
+    "compute",
+    "backend-buckets",
+    "create",
+    "published-my-publication",
+    "--gcs-bucket-name=my-publication",
+  ])
+})
+
+test("runs the add path matcher process", () => {
+  expect(run).toHaveBeenNthCalledWith(3, "gcloud", [
+    "compute",
+    "url-maps",
+    "add-path-matcher",
+    "published",
+    "--path-matcher-name=forward-my-publication",
+    "--default-backend-bucket=published-my-publication",
+    "--backend-bucket-path-rules=/my-publication/=published-my-publication",
+  ])
+})
+
+test("runs the copy files process", () => {
+  expect(run).toHaveBeenNthCalledWith(4, "gsutil", [
     "-m",
     "cp",
     "-r",

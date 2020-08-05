@@ -17,13 +17,37 @@ const templateDir = path.resolve(
   "compositor-template"
 )
 
-const runCopyProcess = publicationId => {
+const runCopyFilesProcess = publicationId => {
   return run("gsutil", [
     "-m",
     "cp",
     "-r",
     path.resolve(templateDir, "public", "**"),
     `gs://${publicationId}`,
+  ])
+}
+
+const runAddPathMatcherProcess = (publicationId, backendBucket) => {
+  const forwardingRule = `forward-${publicationId}`
+
+  return run("gcloud", [
+    "compute",
+    "url-maps",
+    "add-path-matcher",
+    "published",
+    `--path-matcher-name=${forwardingRule}`,
+    `--default-backend-bucket=${backendBucket}`,
+    `--backend-bucket-path-rules=/${publicationId}/=${backendBucket}`,
+  ])
+}
+
+const runCreateBackendBucketProcess = (publicationId, backendBucket) => {
+  return run("gcloud", [
+    "compute",
+    "backend-buckets",
+    "create",
+    backendBucket,
+    `--gcs-bucket-name=${publicationId}`,
   ])
 }
 
@@ -40,11 +64,14 @@ module.exports = (
   instance = process.env.HOSTNAME
 ) => {
   const { publicationId } = parseHostname(instance)
+  const backendBucket = `published-${publicationId}`
 
   createConfig(templateDir, publicationId)
-    .then(() => createBucket(publicationId))
     .then(() => runBuildProcess())
-    .then(() => runCopyProcess(publicationId))
+    .then(() => createBucket(publicationId))
+    .then(() => runCreateBackendBucketProcess(publicationId, backendBucket))
+    .then(() => runAddPathMatcherProcess(publicationId, backendBucket))
+    .then(() => runCopyFilesProcess(publicationId))
     .then(() => success(publicationId, PUBLISH))
     .then(() => cleanup(zone, instance))
     .catch(err => {
