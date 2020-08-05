@@ -18,11 +18,11 @@ beforeEach(() => {
 })
 
 test("runs the delete bucket process", () => {
-  expect(run).toHaveBeenCalledWith(
-    "bin/delete",
-    ["gs://my-publication"],
-    path.resolve(__dirname, "..", "..")
-  )
+  expect(run).toHaveBeenCalledWith("gsutil", [
+    "rm",
+    "-r",
+    "gs://my-publication",
+  ])
 })
 
 test("sends a success message", () => {

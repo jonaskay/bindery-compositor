@@ -13,11 +13,7 @@ module.exports = (
 ) => {
   const { publicationId } = parseHostname(instance)
 
-  run(
-    "bin/delete",
-    [`gs://${publicationId}`],
-    path.resolve(__dirname, "..", "..")
-  )
+  run("gsutil", ["rm", "-r", `gs://${publicationId}`])
     .then(() => success(publicationId, UNPUBLISH))
     .then(() => cleanup(zone, instance))
     .catch(err => {
