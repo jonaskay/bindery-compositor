@@ -1,4 +1,3 @@
-const axios = require("axios")
 const path = require("path")
 const fs = require("fs").promises
 
@@ -37,24 +36,11 @@ const configData = (publicationName, publicationTitle) => `module.exports = {
   ],
 }`
 
-const fetchTitle = publicationId => {
-  return axios
-    .get(`/publications/${publicationId}`, {
-      baseURL: process.env.CONTENT_API_URL,
-    })
-    .then(res => res.data.data.attributes.title)
-}
-
 module.exports = {
-  create: (destinationDir, publicationId, publicationName) => {
+  create: (destinationDir, publicationName, publicationTitle) => {
     const filename = path.resolve(destinationDir, GATSBY_CONFIG)
+    const data = configData(publicationName, publicationTitle)
 
-    return fetchTitle(publicationId)
-      .then(publicationTitle => {
-        const data = configData(publicationName, publicationTitle)
-
-        return fs.writeFile(filename, data)
-      })
-      .then(() => filename)
+    return fs.writeFile(filename, data).then(() => filename)
   },
 }

@@ -2,9 +2,9 @@
 
 exports[`generates a valid config file 1`] = `
 "module.exports = {
-  pathPrefix: \\"/baz\\",
+  pathPrefix: \\"/bar\\",
   siteMetadata: {
-    title: \\"foo\\",
+    title: \\"baz\\",
     description: \\"Lorem ipsum\\",
     author: \\"@gatsbyjs\\",
   },

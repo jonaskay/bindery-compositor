@@ -1,4 +1,5 @@
 const path = require("path")
+const axios = require("axios")
 
 const createConfig = require("./config").create
 const createBucket = require("./bucket").create
@@ -27,7 +28,12 @@ const runCopyFilesProcess = publicationId => {
   ])
 }
 
-const runAddPathMatcherProcess = (publicationId, backendBucket) => {
+const runAddPathMatcherProcess = (
+  publicationId,
+  publicationName,
+  backendBucket,
+  host
+) => {
   const forwardingRule = `forward-${publicationId}`
 
   return run("gcloud", [
@@ -37,7 +43,8 @@ const runAddPathMatcherProcess = (publicationId, backendBucket) => {
     "published",
     `--path-matcher-name=${forwardingRule}`,
     `--default-backend-bucket=${backendBucket}`,
-    `--backend-bucket-path-rules=/${publicationId}/=${backendBucket}`,
+    `--backend-bucket-path-rules=/${publicationName}/=${backendBucket}`,
+    `--existing-host=${host}`,
   ])
 }
 
@@ -59,24 +66,48 @@ const runBuildProcess = () => {
   )
 }
 
+const fetchPublicationData = publicationId => {
+  return axios
+    .get(`/publications/${publicationId}`, {
+      baseURL: process.env.CONTENT_API_URL,
+    })
+    .then(res => ({
+      name: res.data.data.attributes.name,
+      title: res.data.data.attributes.title,
+    }))
+}
+
 module.exports = (
   zone = process.env.COMPUTE_ZONE,
-  instance = process.env.HOSTNAME
+  instance = process.env.HOSTNAME,
+  host = process.env.LOAD_BALANCER_HOST
 ) => {
   const { publicationId } = parseHostname(instance)
   const backendBucket = `published-${publicationId}`
 
-  createConfig(templateDir, publicationId)
-    .then(() => runBuildProcess())
-    .then(() => createBucket(publicationId))
-    .then(() => runCreateBackendBucketProcess(publicationId, backendBucket))
-    .then(() => runAddPathMatcherProcess(publicationId, backendBucket))
-    .then(() => runCopyFilesProcess(publicationId))
-    .then(() => success(publicationId, PUBLISH))
-    .then(() => cleanup(zone, instance))
-    .catch(err => {
-      console.error(err)
+  fetchPublicationData(publicationId).then(data => {
+    const publicationName = data.name
+    const publicationTitle = data.title
 
-      cleanup(zone, instance)
-    })
+    return createConfig(templateDir, publicationName, publicationTitle)
+      .then(() => runBuildProcess())
+      .then(() => createBucket(publicationId))
+      .then(() => runCreateBackendBucketProcess(publicationId, backendBucket))
+      .then(() =>
+        runAddPathMatcherProcess(
+          publicationId,
+          publicationName,
+          backendBucket,
+          host
+        )
+      )
+      .then(() => runCopyFilesProcess(publicationId))
+      .then(() => success(publicationId, PUBLISH))
+      .then(() => cleanup(zone, instance))
+      .catch(err => {
+        console.error(err)
+
+        cleanup(zone, instance)
+      })
+  })
 }

@@ -7,18 +7,6 @@ const createConfig = require("./config").create
 jest.mock("axios")
 
 test("generates a valid config file", async () => {
-  axios.get.mockResolvedValue({
-    data: {
-      data: {
-        id: 42,
-        type: "publication",
-        attributes: {
-          title: "foo",
-        },
-      },
-    },
-  })
-
   const destinationDir = path.resolve(__dirname, "..", "..", "..", "tmp")
   const result = await createConfig(destinationDir, "bar", "baz")
 
