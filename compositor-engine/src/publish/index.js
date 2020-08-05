@@ -9,12 +9,22 @@ const cleanup = require("../cleanup")
 
 const PUBLISH = "publish"
 
+const templateDir = path.resolve(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "compositor-template"
+)
+
 const runCopyProcess = publicationId => {
-  return run(
-    "bin/copy",
-    [`gs://${publicationId}`],
-    path.resolve(__dirname, "..", "..")
-  )
+  return run("gsutil", [
+    "-m",
+    "cp",
+    "-r",
+    path.resolve(templateDir, "public", "**"),
+    `gs://${publicationId}`,
+  ])
 }
 
 const runBuildProcess = () => {
@@ -30,13 +40,6 @@ module.exports = (
   instance = process.env.HOSTNAME
 ) => {
   const { publicationId } = parseHostname(instance)
-  const templateDir = path.resolve(
-    __dirname,
-    "..",
-    "..",
-    "..",
-    "compositor-template"
-  )
 
   createConfig(templateDir, publicationId)
     .then(() => createBucket(publicationId))

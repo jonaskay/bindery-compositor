@@ -44,12 +44,21 @@ test("runs the build process", () => {
 })
 
 test("runs the copy process", () => {
-  expect(run).toHaveBeenNthCalledWith(
-    2,
-    "bin/copy",
-    ["gs://my-publication"],
-    path.resolve(__dirname, "..", "..")
-  )
+  expect(run).toHaveBeenNthCalledWith(2, "gsutil", [
+    "-m",
+    "cp",
+    "-r",
+    path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "compositor-template",
+      "public",
+      "**"
+    ),
+    "gs://my-publication",
+  ])
 })
 
 test("sends a success message", () => {

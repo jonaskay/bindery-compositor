@@ -1,6 +1,6 @@
 const { spawn } = require("child_process")
 
-module.exports = (cmd, args, cwd) => {
+module.exports = (cmd, args, cwd = __dirname) => {
   const childProcess = spawn(cmd, args, { cwd })
 
   childProcess.stdout.setEncoding("utf8")
