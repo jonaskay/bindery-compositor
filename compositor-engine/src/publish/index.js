@@ -2,7 +2,6 @@ const path = require("path")
 const axios = require("axios")
 
 const createConfig = require("./config").create
-const createBucket = require("./bucket").create
 const parseHostname = require("../hostname").parse
 const run = require("../run")
 const { success } = require("../pubsub")
@@ -18,43 +17,13 @@ const templateDir = path.resolve(
   "compositor-template"
 )
 
-const runCopyFilesProcess = publicationId => {
+const runCopyProcess = (bucket, name) => {
   return run("gsutil", [
     "-m",
     "cp",
     "-r",
     path.resolve(templateDir, "public", "**"),
-    `gs://${publicationId}`,
-  ])
-}
-
-const runAddPathMatcherProcess = (
-  publicationId,
-  publicationName,
-  backendBucket,
-  host
-) => {
-  const forwardingRule = `forward-${publicationId}`
-
-  return run("gcloud", [
-    "compute",
-    "url-maps",
-    "add-path-matcher",
-    "published",
-    `--path-matcher-name=${forwardingRule}`,
-    `--default-backend-bucket=${backendBucket}`,
-    `--backend-bucket-path-rules=/${publicationName}/=${backendBucket}`,
-    `--existing-host=${host}`,
-  ])
-}
-
-const runCreateBackendBucketProcess = (publicationId, backendBucket) => {
-  return run("gcloud", [
-    "compute",
-    "backend-buckets",
-    "create",
-    backendBucket,
-    `--gcs-bucket-name=${publicationId}`,
+    `gs://${bucket}/${name}`,
   ])
 }
 
@@ -80,10 +49,9 @@ const fetchPublicationData = publicationId => {
 module.exports = (
   zone = process.env.COMPUTE_ZONE,
   instance = process.env.HOSTNAME,
-  host = process.env.LOAD_BALANCER_HOST
+  bucket = process.env.CLOUD_STORAGE_BUCKET
 ) => {
   const { publicationId } = parseHostname(instance)
-  const backendBucket = `published-${publicationId}`
 
   fetchPublicationData(publicationId).then(data => {
     const publicationName = data.name
@@ -91,17 +59,7 @@ module.exports = (
 
     return createConfig(templateDir, publicationName, publicationTitle)
       .then(() => runBuildProcess())
-      .then(() => createBucket(publicationId))
-      .then(() => runCreateBackendBucketProcess(publicationId, backendBucket))
-      .then(() =>
-        runAddPathMatcherProcess(
-          publicationId,
-          publicationName,
-          backendBucket,
-          host
-        )
-      )
-      .then(() => runCopyFilesProcess(publicationId))
+      .then(() => runCopyProcess(bucket, publicationName))
       .then(() => success(publicationId, PUBLISH))
       .then(() => cleanup(zone, instance))
       .catch(err => {

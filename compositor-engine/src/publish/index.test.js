@@ -3,14 +3,12 @@ const axios = require("axios")
 
 const publish = require(".")
 const createConfig = require("./config").create
-const createBucket = require("./bucket").create
 const run = require("../run")
 const { success } = require("../pubsub")
 const cleanup = require("../cleanup")
 
 jest.mock("axios")
 jest.mock("./config")
-jest.mock("./bucket")
 jest.mock("../run")
 jest.mock("../pubsub")
 jest.mock("../cleanup")
@@ -29,12 +27,11 @@ beforeEach(() => {
   axios.get.mockResolvedValue({ data: payload })
 
   createConfig.mockImplementation(() => new Promise(resolve => resolve()))
-  createBucket.mockImplementation(() => new Promise(resolve => resolve()))
   run.mockImplementation(() => new Promise(resolve => resolve()))
   success.mockImplementation(() => new Promise(resolve => resolve()))
   cleanup.mockImplementation(() => new Promise(resolve => resolve()))
 
-  publish("my-zone", "myprefix-my-publication", "my-host")
+  publish("my-zone", "myprefix-my-publication", "my-bucket")
 })
 
 test("creates a config file", () => {
@@ -54,34 +51,7 @@ test("runs the build process", () => {
   )
 })
 
-test("creates a bucket", () => {
-  expect(createBucket).toHaveBeenCalledWith("my-publication")
-})
-
-test("runs the create backend bucket process", () => {
-  expect(run).toHaveBeenNthCalledWith(2, "gcloud", [
-    "compute",
-    "backend-buckets",
-    "create",
-    "published-my-publication",
-    "--gcs-bucket-name=my-publication",
-  ])
-})
-
-test("runs the add path matcher process", () => {
-  expect(run).toHaveBeenNthCalledWith(3, "gcloud", [
-    "compute",
-    "url-maps",
-    "add-path-matcher",
-    "published",
-    "--path-matcher-name=forward-my-publication",
-    "--default-backend-bucket=published-my-publication",
-    "--backend-bucket-path-rules=/my-name/=published-my-publication",
-    "--existing-host=my-host",
-  ])
-})
-
-test("runs the copy files process", () => {
+test("runs the copy process", () => {
   expect(run).toHaveBeenNthCalledWith(4, "gsutil", [
     "-m",
     "cp",
@@ -95,7 +65,7 @@ test("runs the copy files process", () => {
       "public",
       "**"
     ),
-    "gs://my-publication",
+    "gs://my-bucket/my-name",
   ])
 })
 
