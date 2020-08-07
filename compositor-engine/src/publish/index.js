@@ -7,8 +7,6 @@ const run = require("../run")
 const { success } = require("../pubsub")
 const cleanup = require("../cleanup")
 
-const PUBLISH = "publish"
-
 const templateDir = path.resolve(
   __dirname,
   "..",
@@ -49,7 +47,8 @@ const fetchPublicationData = publicationId => {
 module.exports = (
   zone = process.env.COMPUTE_ZONE,
   instance = process.env.HOSTNAME,
-  bucket = process.env.CLOUD_STORAGE_BUCKET
+  bucket = process.env.CLOUD_STORAGE_BUCKET,
+  topic = process.env.PUBSUB_TOPIC
 ) => {
   const { publicationId } = parseHostname(instance)
 
@@ -60,7 +59,7 @@ module.exports = (
     return createConfig(templateDir, publicationName, publicationTitle)
       .then(() => runBuildProcess())
       .then(() => runCopyProcess(bucket, publicationName))
-      .then(() => success(publicationId, PUBLISH))
+      .then(() => success(publicationId, topic))
       .then(() => cleanup(zone, instance))
       .catch(err => {
         console.error(err)
