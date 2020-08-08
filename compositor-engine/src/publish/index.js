@@ -35,7 +35,7 @@ const runBuildProcess = () => {
 
 const fetchPublicationData = projectId => {
   return axios
-    .get(`/publications/${projectId}`, {
+    .get(`/projects/${projectId}`, {
       baseURL: process.env.CONTENT_API_URL,
     })
     .then(res => ({
