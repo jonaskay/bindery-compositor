@@ -13,8 +13,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "pub": "node index.js publish",
-    "test": "jest",
-    "unpub": "node index.js unpublish"
+    "start": "node index.js publish",
+    "test": "jest"
   }
 }

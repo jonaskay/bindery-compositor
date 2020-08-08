@@ -2,8 +2,7 @@
   "private": true,
   "workspaces": ["compositor-engine", "compositor-template"],
   "scripts": {
-    "pub": "yarn workspace compositor-engine pub",
-    "test": "yarn workspace compositor-engine test",
-    "unpub": "yarn workspace compositor-engine unpub"
+    "start": "yarn workspace compositor-engine start",
+    "test": "yarn workspace compositor-engine test"
   }
 }
