@@ -1,6 +1,6 @@
 {
-  "name": "compositor-engine",
-  "version": "0.1.0",
+  "name": "bindery-compositor-engine",
+  "version": "0.0.1",
   "main": "index.js",
   "author": "Joonas Kykkänen <jonaskay@iki.fi>",
   "dependencies": {

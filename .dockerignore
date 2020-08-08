@@ -1,10 +1,10 @@
-/compositor-engine/node_modules
-/compositor-engine/service-account.json
+/bindery-compositor-engine/node_modules
+/bindery-compositor-engine/service-account.json
 
-/compositor-template/node_modules
-/compositor-template/.cache
-/compositor-template/public
-/compositor-template/gatsby-config.js
+/bindery-compositor-template/node_modules
+/bindery-compositor-template/.cache
+/bindery-compositor-template/public
+/bindery-compositor-template/gatsby-config.js
 
 /node_modules
 /tmp/*

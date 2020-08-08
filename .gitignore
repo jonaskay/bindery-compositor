@@ -114,10 +114,10 @@ public
 .pnp.*
 
 # Ignore service account credentials
-/compositor-engine/service-account.json
+/bindery-compositor-engine/service-account.json
 
 # Ignore auto-generated files
-/compositor-template/gatsby-config.js
+/bindery-compositor-template/gatsby-config.js
 
 /tmp/*
 !/tmp/.keep

@@ -1,1 +1,1 @@
-# compositor
+# bindery-compositor

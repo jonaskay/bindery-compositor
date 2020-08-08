@@ -1,8 +1,8 @@
 {
   "private": true,
-  "workspaces": ["compositor-engine", "compositor-template"],
+  "workspaces": ["bindery-compositor-engine", "bindery-compositor-template"],
   "scripts": {
-    "start": "yarn workspace compositor-engine start",
-    "test": "yarn workspace compositor-engine test"
+    "start": "yarn workspace bindery-compositor-engine start",
+    "test": "yarn workspace bindery-compositor-engine test"
   }
 }
