@@ -1,6 +1,7 @@
 {
   "name": "bindery-compositor-template",
   "description": "Template for a Gatsby project",
+  "private": true,
   "version": "0.0.1",
   "author": "Joonas Kykkänen <jonaskay@iki.fi>",
   "dependencies": {

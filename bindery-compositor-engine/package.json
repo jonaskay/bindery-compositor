@@ -1,5 +1,6 @@
 {
   "name": "bindery-compositor-engine",
+  "private": true,
   "version": "0.0.1",
   "main": "index.js",
   "author": "Joonas Kykkänen <jonaskay@iki.fi>",
