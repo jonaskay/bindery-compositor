@@ -56,15 +56,7 @@ test("runs the copy process", () => {
     "-m",
     "cp",
     "-r",
-    path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "compositor-template",
-      "public",
-      "**"
-    ),
+    path.resolve(__dirname, "..", "..", "..", "compositor-template", "public"),
     "gs://my-bucket/my-name",
   ])
 })

@@ -20,7 +20,7 @@ const runCopyProcess = (bucket, name) => {
     "-m",
     "cp",
     "-r",
-    path.resolve(templateDir, "public", "**"),
+    path.resolve(templateDir, "public"),
     `gs://${bucket}/${name}`,
   ])
 }
