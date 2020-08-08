@@ -33,9 +33,9 @@ const runBuildProcess = () => {
   )
 }
 
-const fetchPublicationData = publicationId => {
+const fetchPublicationData = projectId => {
   return axios
-    .get(`/publications/${publicationId}`, {
+    .get(`/publications/${projectId}`, {
       baseURL: process.env.CONTENT_API_URL,
     })
     .then(res => ({
@@ -50,16 +50,16 @@ module.exports = (
   bucket = process.env.CLOUD_STORAGE_BUCKET,
   topic = process.env.PUBSUB_TOPIC
 ) => {
-  const { publicationId } = parseHostname(instance)
+  const { projectId } = parseHostname(instance)
 
-  fetchPublicationData(publicationId).then(data => {
-    const publicationName = data.name
-    const publicationTitle = data.title
+  fetchPublicationData(projectId).then(data => {
+    const projectName = data.name
+    const projectTitle = data.title
 
-    return createConfig(templateDir, publicationName, publicationTitle)
+    return createConfig(templateDir, projectName, projectTitle)
       .then(() => runBuildProcess())
-      .then(() => runCopyProcess(bucket, publicationName))
-      .then(() => success(publicationId, topic))
+      .then(() => runCopyProcess(bucket, projectName))
+      .then(() => success({ id: projectId, name: projectName }, topic))
       .then(() => cleanup(zone, instance))
       .catch(err => {
         console.error(err)

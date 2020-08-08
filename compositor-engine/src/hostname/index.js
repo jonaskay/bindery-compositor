@@ -1,6 +1,6 @@
 module.exports = {
   parse: hostname => {
-    const re = /(?<prefix>[^\s-]+)-(?<publicationId>\S+)/
+    const re = /(?<prefix>[^\s-]+)-(?<projectId>\S+)/
     const found = hostname.match(re)
 
     if (found === null) {

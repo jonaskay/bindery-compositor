@@ -3,10 +3,10 @@ const { PubSub } = require("@google-cloud/pubsub")
 const SUCCESS = "success"
 
 module.exports = {
-  success: (publicationId, topic, pubsub = new PubSub(), now = new Date()) => {
+  success: (project, topic, pubsub = new PubSub(), now = new Date()) => {
     const timestamp = now.toISOString()
     const data = JSON.stringify({
-      publicationId: publicationId,
+      project,
       status: SUCCESS,
       timestamp,
     })

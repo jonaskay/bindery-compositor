@@ -11,10 +11,10 @@ module.exports = (
   zone = process.env.COMPUTE_ZONE,
   instance = process.env.HOSTNAME
 ) => {
-  const { publicationId } = parseHostname(instance)
+  const { projectId } = parseHostname(instance)
 
-  run("gsutil", ["rm", "-r", `gs://${publicationId}`])
-    .then(() => success(publicationId, UNPUBLISH))
+  run("gsutil", ["rm", "-r", `gs://${projectId}`])
+    .then(() => success(projectId, UNPUBLISH))
     .then(() => cleanup(zone, instance))
     .catch(err => {
       console.error(err)

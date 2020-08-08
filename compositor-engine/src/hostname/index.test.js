@@ -3,7 +3,7 @@ const { parse } = require(".")
 test("returns the prefix and publication id when hostname is valid", () => {
   expect(parse("foo-bar-baz")).toEqual({
     prefix: "foo",
-    publicationId: "bar-baz",
+    projectId: "bar-baz",
   })
 })
 

@@ -16,7 +16,7 @@ jest.mock("../cleanup")
 beforeEach(() => {
   const payload = {
     data: {
-      id: 42,
+      id: "my-project",
       type: "publication",
       attributes: {
         name: "my-name",
@@ -31,7 +31,7 @@ beforeEach(() => {
   success.mockImplementation(() => new Promise(resolve => resolve()))
   cleanup.mockImplementation(() => new Promise(resolve => resolve()))
 
-  publish("my-zone", "myprefix-my-publication", "my-bucket", "my-topic")
+  publish("my-zone", "mytemplate-my-project", "my-bucket", "my-topic")
 })
 
 test("creates a config file", () => {
@@ -70,9 +70,12 @@ test("runs the copy process", () => {
 })
 
 test("sends a success message", () => {
-  expect(success).toHaveBeenCalledWith("my-publication", "my-topic")
+  expect(success).toHaveBeenCalledWith(
+    { id: "my-project", name: "my-name" },
+    "my-topic"
+  )
 })
 
 test("deletes the instance", () => {
-  expect(cleanup).toHaveBeenCalledWith("my-zone", "myprefix-my-publication")
+  expect(cleanup).toHaveBeenCalledWith("my-zone", "mytemplate-my-project")
 })
