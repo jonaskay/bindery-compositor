@@ -14,7 +14,7 @@ beforeEach(() => {
 test("sends a valid success message", () => {
   const message = {
     project: { id: "foo", name: "bar" },
-    error: {},
+    errors: [],
     timestamp: "1970-01-01T00:00:00.000Z",
   }
   const data = Buffer.from(JSON.stringify(message))
@@ -27,7 +27,7 @@ test("sends a valid success message", () => {
 test("sends a valid error message", () => {
   const message = {
     project: { id: "foo", name: "bar" },
-    error: { name: "Error", message: "baz" },
+    errors: [{ name: "Error", message: "baz" }],
     timestamp: "1970-01-01T00:00:00.000Z",
   }
   const data = Buffer.from(JSON.stringify(message))
