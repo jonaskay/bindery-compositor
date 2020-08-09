@@ -62,10 +62,7 @@ test("runs the copy process", () => {
 })
 
 test("sends a success message", () => {
-  expect(success).toHaveBeenCalledWith(
-    { id: "my-project", name: "my-name" },
-    "my-topic"
-  )
+  expect(success).toHaveBeenCalledWith({ id: "my-project" }, "my-topic")
 })
 
 test("deletes the instance", () => {
