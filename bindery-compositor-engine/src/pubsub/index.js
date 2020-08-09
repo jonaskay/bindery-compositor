@@ -10,13 +10,13 @@ const publish = (message, topic, pubsub, date) => {
 
 module.exports = {
   success: (project, topic, pubsub = new PubSub(), now = new Date()) => {
-    const message = { project }
+    const message = { project, error: {} }
 
     return publish(message, topic, pubsub, now)
   },
 
-  error: (err, topic, pubsub = new PubSub(), now = new Date()) => {
-    const message = { error: { name: err.name, message: err.message } }
+  error: (project, err, topic, pubsub = new PubSub(), now = new Date()) => {
+    const message = { project, error: { name: err.name, message: err.message } }
 
     return publish(message, topic, pubsub, now)
   },
