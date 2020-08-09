@@ -36,7 +36,7 @@ beforeEach(() => {
 
 test("creates a config file", () => {
   expect(createConfig).toHaveBeenCalledWith(
-    path.resolve(__dirname, "..", "..", "..", "compositor-template"),
+    path.resolve(__dirname, "..", "..", "..", "bindery-compositor-template"),
     "my-name",
     "my-title"
   )
@@ -46,7 +46,7 @@ test("runs the build process", () => {
   expect(run).toHaveBeenNthCalledWith(
     1,
     "yarn",
-    ["workspace", "compositor-template", "build", "--prefix-paths"],
+    ["workspace", "bindery-compositor-template", "build", "--prefix-paths"],
     __dirname
   )
 })
@@ -56,7 +56,14 @@ test("runs the copy process", () => {
     "-m",
     "cp",
     "-r",
-    path.resolve(__dirname, "..", "..", "..", "compositor-template", "public"),
+    path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "bindery-compositor-template",
+      "public"
+    ),
     "gs://my-bucket/my-name",
   ])
 })

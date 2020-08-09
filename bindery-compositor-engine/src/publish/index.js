@@ -12,7 +12,7 @@ const templateDir = path.resolve(
   "..",
   "..",
   "..",
-  "compositor-template"
+  "bindery-compositor-template"
 )
 
 const runCopyProcess = (bucket, name) => {
@@ -28,7 +28,7 @@ const runCopyProcess = (bucket, name) => {
 const runBuildProcess = () => {
   return run(
     "yarn",
-    ["workspace", "compositor-template", "build", "--prefix-paths"],
+    ["workspace", "bindery-compositor-template", "build", "--prefix-paths"],
     path.resolve(__dirname)
   )
 }
