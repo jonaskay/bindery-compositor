@@ -4,7 +4,7 @@ const axios = require("axios")
 const createConfig = require("./config").create
 const parseHostname = require("../hostname").parse
 const run = require("../run")
-const { success } = require("../pubsub")
+const { success, error } = require("../pubsub")
 const cleanup = require("../cleanup")
 
 const templateDir = path.resolve(
@@ -53,7 +53,15 @@ module.exports = (
   const handleError = err => {
     console.error(err)
 
-    cleanup(zone, instance)
+    error(err, topic)
+      .then(() => {
+        cleanup(zone, instance)
+      })
+      .catch(err => {
+        console.error(err)
+
+        cleanup(zone, instance)
+      })
   }
 
   const { projectId } = parseHostname(instance)

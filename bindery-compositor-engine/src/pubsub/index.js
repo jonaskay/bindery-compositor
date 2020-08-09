@@ -1,17 +1,23 @@
 const { PubSub } = require("@google-cloud/pubsub")
 
-const SUCCESS = "success"
+const publish = (message, topic, pubsub, date) => {
+  const timestamp = date.toISOString()
+  const data = JSON.stringify({ ...message, timestamp })
+  const dataBuffer = Buffer.from(data)
+
+  return pubsub.topic(topic).publish(dataBuffer)
+}
 
 module.exports = {
   success: (project, topic, pubsub = new PubSub(), now = new Date()) => {
-    const timestamp = now.toISOString()
-    const data = JSON.stringify({
-      project,
-      status: SUCCESS,
-      timestamp,
-    })
-    const dataBuffer = Buffer.from(data)
+    const message = { project }
 
-    return pubsub.topic(topic).publish(dataBuffer)
+    return publish(message, topic, pubsub, now)
+  },
+
+  error: (err, topic, pubsub = new PubSub(), now = new Date()) => {
+    const message = { error: { name: err.name, message: err.message } }
+
+    return publish(message, topic, pubsub, now)
   },
 }
