@@ -50,10 +50,12 @@ module.exports = (
   bucket = process.env.CLOUD_STORAGE_BUCKET,
   topic = process.env.PUBSUB_TOPIC
 ) => {
+  const { projectId } = parseHostname(instance)
+
   const handleError = err => {
     console.error(err)
 
-    error(err, topic)
+    error({ id: projectId }, err, topic)
       .then(() => {
         cleanup(zone, instance)
       })
@@ -64,8 +66,6 @@ module.exports = (
       })
   }
 
-  const { projectId } = parseHostname(instance)
-
   fetchPublicationData(projectId)
     .then(data => {
       const projectName = data.name
@@ -74,7 +74,7 @@ module.exports = (
       return createConfig(templateDir, projectName, projectTitle)
         .then(() => runBuildProcess())
         .then(() => runCopyProcess(bucket, projectName))
-        .then(() => success({ id: projectId, name: projectName }, topic))
+        .then(() => success({ id: projectId }, topic))
         .then(() => cleanup(zone, instance))
         .catch(err => {
           handleError(err)
