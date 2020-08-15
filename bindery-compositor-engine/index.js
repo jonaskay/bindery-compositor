@@ -1,3 +1,4 @@
+const DEBUG = "debug"
 const PUBLISH = "publish"
 
 if (process.argv.length === 2) {
@@ -6,6 +7,9 @@ if (process.argv.length === 2) {
 }
 
 switch (process.argv[2]) {
+  case DEBUG:
+    console.log("Running in debug mode")
+    break
   case PUBLISH:
     require("./src/publish")()
     break

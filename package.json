@@ -2,6 +2,7 @@
   "private": true,
   "workspaces": ["bindery-compositor-engine", "bindery-compositor-template"],
   "scripts": {
+    "debug": "yarn workspace bindery-compositor-engine debug",
     "start": "yarn workspace bindery-compositor-engine start",
     "test": "yarn workspace bindery-compositor-engine test"
   }

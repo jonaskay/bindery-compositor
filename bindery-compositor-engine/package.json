@@ -14,6 +14,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "debug": "node index.js debug",
     "start": "node index.js publish",
     "test": "jest"
   }
